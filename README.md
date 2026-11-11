@@ -31,3 +31,10 @@ subsequent call once the `\n` appears. Only `\n` is treated as a line
 terminator; `\r\n` and bare `\r` are not split. If the file is truncated to a
 size below your stored offset, `offset_exclusive` is reset to the file's new
 size so the next call starts cleanly from the new end.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
